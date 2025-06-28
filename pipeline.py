@@ -13,9 +13,11 @@ from sqlalchemy import Column, DateTime, Numeric, MetaData, Table, create_engine
 from sqlalchemy.dialects.postgresql import insert
 
 
+
 # ----------- Configurações globais -------------------------------------------------
  # Carrega variáveis de ambiente do .env
-load_dotenv()
+from pathlib import Path
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 # Busca a string de conexão
 PG_URI = os.getenv("PG_URI")
@@ -30,8 +32,6 @@ logging.basicConfig(
 # Cria engine com a URI lida
 engine = create_engine(PG_URI)
   
-
-
   
 #------------------ Parâmetros de tempo para Chapecó - SC ---------------------
 LAT = -27.0964     
@@ -94,7 +94,17 @@ def carregar(df):
     registros = df.to_dict(orient="records")
 
     stmt = insert(clima_chapeco).values(registros)
-    stmt = stmt.on_conflict_do_update(index_elements=["time"])
+   
+    stmt = stmt.on_conflict_do_update(
+    index_elements=["time"],
+    set_={
+        # coluna : valor_atualizado
+        "temperature_2m": stmt.excluded.temperature_2m,
+        "rain": stmt.excluded.rain,
+        "visibility": stmt.excluded.visibility,
+        "precipitation_probability": stmt.excluded.precipitation_probability,
+        }
+    )
 
     with engine.begin() as conn:   # transação atômica
         conn.execute(stmt)
