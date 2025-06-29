@@ -46,3 +46,15 @@ Print abaixo mostra os dados carregados na tabela 'clima_chapeco' via pgAdmin.
 
 ![Tabela populada](assets/dados_postgres.png)
 
+## Agendamento automático
+
+Este pipeline está configurado para rodar automaticamente todos os dias às **8h da manhã** por meio do **Agendador de Tarefas do Windows**.
+
+### Como funciona:
+
+Um arquivo 'rodar_pipeline.bat' foi criado com o seguinte conteúdo:
+
+```bat
+@echo off
+cd /d C:\<CAMINHO_DO_SEU_PROJETO>
+python pipeline.py
