@@ -42,6 +42,7 @@ python pipeline.py
 
 ## Resultado
 
-Print abaixo mostra os dados carregados na tabela 'temperatura_chapeco' via pgAdmin.
+Print abaixo mostra os dados carregados na tabela 'clima_chapeco' via pgAdmin.
 
-📷 *(incluir print aqui depois)*
+![Tabela populada](assets/dados_postgres.png)
+

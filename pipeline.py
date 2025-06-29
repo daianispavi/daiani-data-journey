@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Conecta no Open-Mateo via API
 """
@@ -11,16 +10,19 @@ import pandas as pd
 from dotenv import load_dotenv
 from sqlalchemy import Column, DateTime, Numeric, MetaData, Table, create_engine
 from sqlalchemy.dialects.postgresql import insert
-
+from pathlib import Path
 
 
 # ----------- Configurações globais -------------------------------------------------
  # Carrega variáveis de ambiente do .env
-from pathlib import Path
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
 # Busca a string de conexão
 PG_URI = os.getenv("PG_URI")
+
+if not PG_URI:
+    raise ValueError("PG_URI não encontrada – verifique o arquivo .env")
+    
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 # Configura o log
